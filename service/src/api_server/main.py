@@ -8,7 +8,13 @@ from src.listeners.http_get_listener import run_http_get_app
 from src.listeners.http_post_listener import run_http_post_app
 from multiprocessing import Process
 
-app = FastAPI()
+app = FastAPI(
+    title="Service API",
+    version="1.0.0",
+    docs_url="/docs",
+    openapi_url="/api/docs/openapi.json",
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1}
+)
 
 listeners_list = \
     {

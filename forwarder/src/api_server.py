@@ -4,7 +4,13 @@ from pydantic import BaseModel
 
 TIMEOUT = 5
 
-app = FastAPI()
+app = FastAPI(
+    title="Forwarder API",
+    version="1.0.0",
+    docs_url="/docs",
+    openapi_url="/api/docs/openapi.json",
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1}
+)
 
 
 class HttpGetParams(BaseModel):
