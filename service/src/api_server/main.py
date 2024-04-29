@@ -1,10 +1,11 @@
 from time import sleep
 from typing import Optional, Union
 from fastapi import FastAPI, Response, UploadFile, File, Depends
-from src.packet_creators.scapy_get import scapy_send_http_get
-from src.packet_creators.scapy_post import scapy_send_post_get
+from service.src.packet_creators.scapy_get import scapy_send_http_get
+from service.src.packet_creators.scapy_post import scapy_send_post_get
 from pydantic import BaseModel
-from src.listeners.http_get_listener import run
+from service.src.listeners.http_get_listener import run_http_get_app
+from service.src.listeners.http_post_listener import run_http_post_app
 from multiprocessing import Process
 
 app = FastAPI()
@@ -91,7 +92,7 @@ def run_http_get_listener(http_get_listener_params: HTTPGetListenerParams,
     # Run the listener
     try:
         # Create a child process
-        child = Process(target=run, args=(http_get_listener_params.ip, http_get_listener_params.port))
+        child = Process(target=run_http_get_app, args=(http_get_listener_params.ip, http_get_listener_params.port))
         # Set the child process as a daemon
         child.daemon = True
         # Start the child process
@@ -144,7 +145,7 @@ def run_http_post_listener(http_post_listener_params: HTTPPostListenerParams,
     # Run the listener
     try:
         # Create a child process
-        child = Process(target=run, args=(http_post_listener_params.ip, http_post_listener_params.port))
+        child = Process(target=run_http_post_app, args=(http_post_listener_params.ip, http_post_listener_params.port))
         # Set the child process as a daemon
         child.daemon = True
         # Start the child process

@@ -4,7 +4,7 @@ import uvicorn
 http_get_app = FastAPI()
 
 
-def run(host, port):
+def run_http_get_app(host, port):
     uvicorn.run(http_get_app, host=host, port=port)
 
 

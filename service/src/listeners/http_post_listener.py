@@ -4,7 +4,7 @@ import uvicorn
 http_post_app = FastAPI()
 
 
-def run(host, port):
+def run_http_post_app(host, port):
     uvicorn.run(http_post_app, host=host, port=port)
 
 
