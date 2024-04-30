@@ -41,6 +41,7 @@ class HttpPostParams(BaseModel):
     deport: int = 8080
     sport: int = 0
     path: str = "/"
+    user_agent: str = "Mozilla/5.0"
 
 
 class HTTPGetListenerParams(BaseModel):
@@ -63,6 +64,7 @@ def send_http_post(response: Response,
     try:
         scapy_send_post_get(http_post_params.ip, http_post_params.deport,
                             http_post_params.sport, http_post_params.path,
+                            http_post_params.user_agent,
                             file.filename, file.file.read())
     except Exception as e:
         response.status_code = 500

@@ -31,6 +31,7 @@ class HttpPostParams(BaseModel):
     deport: int = 8080
     sport: int = 0
     path: str = "/"
+    user_agent: str = "Mozilla/5.0"
 
 
 class HTTPGetListenerParams(BaseModel):
@@ -89,7 +90,8 @@ def send_http_post(
                                          "ip": http_post_params.ip,
                                          "deport": http_post_params.deport,
                                          "sport": http_post_params.sport,
-                                         "path": http_post_params.path
+                                         "path": http_post_params.path,
+                                         "user_agent": http_post_params.user_agent
                                      },
                                      files={"file": (file.filename, file.file.read())},
                                      timeout=TIMEOUT
