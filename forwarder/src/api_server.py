@@ -12,7 +12,7 @@ TIMEOUT = 30
 app = FastAPI(
     title="Forwarder API",
     version="1.0.0",
-    docs_url="/docs",
+    docs_url="/",
     openapi_url="/api/docs/openapi.json",
     swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 )

@@ -16,7 +16,7 @@ import fastapi_offline_swagger_ui
 app = FastAPI(
     title="Service API",
     version="1.0.0",
-    docs_url="/docs",
+    docs_url="/",
     openapi_url="/api/docs/openapi.json",
     swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 )
@@ -42,13 +42,13 @@ class HttpPostParams(BaseModel):
 
 
 class HTTPGetListenerParams(BaseModel):
-    ip: str
-    port: int
+    ip: str = "0.0.0.0"
+    port: int = 8080
 
 
 class HTTPPostListenerParams(BaseModel):
-    ip: str
-    port: int
+    ip: str = "0.0.0.0"
+    port: int = 8080
 
 
 @app.post("/send_http_post")
