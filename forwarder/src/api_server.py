@@ -71,7 +71,6 @@ def send_http_get(
     return "OK"
 
 
-# TODO Implement this endpoint
 @app.post("/send_http_post")
 def send_http_post(
         response: Response,

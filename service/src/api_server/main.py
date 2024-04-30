@@ -1,6 +1,6 @@
 from os import path
 from time import sleep
-from typing import Optional, Union
+from typing import Optional
 from fastapi import FastAPI, Response, UploadFile, File, Depends
 from src.packet_creators.scapy_get import scapy_send_http_get
 from src.packet_creators.scapy_post import scapy_send_post_get

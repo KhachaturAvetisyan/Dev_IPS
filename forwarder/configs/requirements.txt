@@ -3,3 +3,4 @@ uvicorn~=0.13.4
 requests~=2.31.0
 pydantic~=2.7.1
 python-multipart~=0.0.9
+fastapi_offline_swagger_ui @ git+https://github.com/ahmetoner/fastapi-offline-swagger-ui@049eb7f0794da5aa7bfa042e8c6b03bb38a3b3b1
