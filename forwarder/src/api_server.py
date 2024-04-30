@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.openapi.docs import get_swagger_ui_html
 import fastapi_offline_swagger_ui
 
-TIMEOUT = 5
+TIMEOUT = 30
 
 app = FastAPI(
     title="Forwarder API",
@@ -32,13 +32,13 @@ class HttpPostParams(BaseModel):
 
 
 class HTTPGetListenerParams(BaseModel):
-    ip: str
-    port: int
+    ip: str = "0.0.0.0"
+    port: int = 8080
 
 
 class HTTPPostListenerParams(BaseModel):
-    ip: str
-    port: int
+    ip: str = "0.0.0.0"
+    port: int = 8080
 
 
 @app.post("/send_http_get")
