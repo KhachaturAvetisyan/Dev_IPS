@@ -7,4 +7,4 @@ if __name__ == "__main__":
     configs = json.load(open("configs/configs.json"))
 
     # Run the API server
-    uvicorn.run(app, host=configs["api_server"]["host"], port=configs["api_server"]["port"])
+    uvicorn.run("run:app", host=configs["api_server"]["host"], port=configs["api_server"]["port"], reload=True)

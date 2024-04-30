@@ -3,7 +3,7 @@ from scapy.layers.inet import IP, TCP
 import random
 
 
-def scapy_send_http_get(ip, deport, sport, user_agent):
+def scapy_send_http_get(ip, deport, sport, path, user_agent):
     # Check if source port is 0
     if sport == 0:
         sport = random.randint(1025, 65500)
@@ -28,7 +28,7 @@ def scapy_send_http_get(ip, deport, sport, user_agent):
 
         # Craft HTTP GET request
         http_get_request = (
-            b'GET / HTTP/1.1\r\n'
+            b'GET ' + path.encode() + b' HTTP/1.1\r\n'
             b'Host: ' + ip.encode() + b'\r\n'
             b'Connection: keep-alive\r\n'
             b'Cache-Control: max-age=0\r\n'

@@ -22,6 +22,7 @@ class HttpGetParams(BaseModel):
     ip: str
     deport: int = 8080
     sport: int = 0
+    path: str = "/"
     user_agent: str = "Mozilla/5.0"
 
 
@@ -55,6 +56,7 @@ def send_http_get(
                                          "ip": http_get_params.ip,
                                          "deport": http_get_params.deport,
                                          "sport": http_get_params.sport,
+                                         "path": http_get_params.path,
                                          "user_agent": http_get_params.user_agent
                                      },
                                      timeout=TIMEOUT
@@ -249,5 +251,6 @@ if path.exists(assets_path + "/swagger-ui.css") and path.exists(assets_path + "/
             swagger_css_url="/assets/swagger-ui.css",
             swagger_js_url="/assets/swagger-ui-bundle.js",
         )
+
 
     applications.get_swagger_ui_html = swagger_monkey_patch

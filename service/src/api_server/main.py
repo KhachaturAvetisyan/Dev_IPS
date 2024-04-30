@@ -32,6 +32,7 @@ class HttpGetParams(BaseModel):
     ip: str
     deport: int = 8080
     sport: int = 0
+    path: str = "/"
     user_agent: str = "Mozilla/5.0"
 
 
@@ -75,7 +76,7 @@ def send_http_get(http_get_params: HttpGetParams,
     # Run the send_http_get function
     try:
         scapy_send_http_get(http_get_params.ip, http_get_params.deport,
-                            http_get_params.sport, http_get_params.user_agent)
+                            http_get_params.sport, http_get_params.path, http_get_params.user_agent)
     except Exception as e:
         response.status_code = 500
         return str(e)
