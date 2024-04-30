@@ -29,7 +29,7 @@ def scapy_send_http_get(ip, deport, sport, path, user_agent):
         # Craft HTTP GET request
         http_get_request = (
             b'GET ' + path.encode() + b' HTTP/1.1\r\n'
-            b'Host: ' + ip.encode() + b'\r\n'
+            b'Host: ' + ip.encode() + b':' + str(deport).encode() + b'\r\n'
             b'Connection: keep-alive\r\n'
             b'Cache-Control: max-age=0\r\n'
             b'Upgrade-Insecure-Requests: 1\r\n'
@@ -40,6 +40,8 @@ def scapy_send_http_get(ip, deport, sport, path, user_agent):
             b'Accept-Encoding: gzip,deflate\r\n'
             b'Accept-Language: en-US,en;q=0.9\r\n\r\n'
         )
+
+        print(http_get_request)
 
         # Create HTTP GET request within established TCP connection
         http_request_packet = IP(dst=ip) / TCP(dport=deport, sport=sport,

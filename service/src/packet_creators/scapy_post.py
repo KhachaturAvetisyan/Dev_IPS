@@ -4,7 +4,7 @@ import random
 from scapy.layers.inet import IP, TCP
 
 
-def scapy_send_post_get(ip, deport, sport, file_name, file_content):
+def scapy_send_post_get(ip, deport, sport, path, file_name, file_content):
     # Check if source port is 0
     if sport == 0:
         sport = random.randint(1025, 65500)
@@ -27,8 +27,8 @@ def scapy_send_post_get(ip, deport, sport, file_name, file_content):
 
         # Craft HTTP POST request with file content
         http_post_request = (
-            b'POST /upload HTTP/1.1\r\n'
-            b'Host: ' + ip.encode() + b'\r\n'
+            b'POST ' + path.encode() + b' HTTP/1.1\r\n'
+            b'Host: ' + ip.encode() + b':' + str(deport).encode() + b'\r\n'
             b'Connection: keep-alive\r\n'
             b'Content-Type: multipart/form-data; '
             b'boundary=boundary123\r\n'
@@ -41,6 +41,8 @@ def scapy_send_post_get(ip, deport, sport, file_name, file_content):
             b'\r\n'
             b'--boundary123--\r\n'
         )
+
+        print(http_post_request)
 
         # Send HTTP POST request within established TCP connection
         http_request_packet = IP(dst=ip) / TCP(dport=deport, sport=sport,

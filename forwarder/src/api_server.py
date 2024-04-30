@@ -30,6 +30,7 @@ class HttpPostParams(BaseModel):
     ip: str
     deport: int = 8080
     sport: int = 0
+    path: str = "/"
 
 
 class HTTPGetListenerParams(BaseModel):
@@ -88,6 +89,7 @@ def send_http_post(
                                          "ip": http_post_params.ip,
                                          "deport": http_post_params.deport,
                                          "sport": http_post_params.sport,
+                                         "path": http_post_params.path
                                      },
                                      files={"file": (file.filename, file.file.read())},
                                      timeout=TIMEOUT
