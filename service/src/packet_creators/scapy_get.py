@@ -4,6 +4,7 @@ import random
 
 RCV_PACKET_TIMEOUT = 3
 
+
 def scapy_send_http_get(ip, deport, sport, path, user_agent):
     # Check if source port is 0
     if sport == 0:
@@ -13,7 +14,7 @@ def scapy_send_http_get(ip, deport, sport, path, user_agent):
     syn_packet = IP(dst=ip) / TCP(dport=deport, sport=sport, flags="S")
 
     # Send SYN packet and receive SYN-ACK response
-    syn_ack_response = sr1(syn_packet, verbose=False, timeout=RCV_PACKET_TIMEOUT)
+    syn_ack_response = sr1(syn_packet, verbose=False)
 
     if syn_ack_response:
         # Extract sequence and acknowledgment numbers
@@ -25,7 +26,7 @@ def scapy_send_http_get(ip, deport, sport, path, user_agent):
                                       flags="A", seq=seq_num, ack=ack_num)
 
         # Send ACK packet
-        send(ack_packet, verbose=False, timeout=RCV_PACKET_TIMEOUT)
+        send(ack_packet, verbose=False)
 
         # Craft HTTP GET request
         http_get_request = (
@@ -49,7 +50,7 @@ def scapy_send_http_get(ip, deport, sport, path, user_agent):
                                                flags="A", seq=seq_num, ack=ack_num) / http_get_request
 
         # Send HTTP GET request and receive response
-        response = sr1(http_request_packet, verbose=False, timeout=RCV_PACKET_TIMEOUT)
+        response = sr1(http_request_packet, verbose=False)
 
         if not response:
             raise ValueError("Response is None")

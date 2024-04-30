@@ -5,6 +5,7 @@ from scapy.layers.inet import IP, TCP
 
 RCV_PACKET_TIMEOUT = 3
 
+
 def scapy_send_post_get(ip, deport, sport, path, user_agent, file_name, file_content):
     # Check if source port is 0
     if sport == 0:
@@ -14,7 +15,7 @@ def scapy_send_post_get(ip, deport, sport, path, user_agent, file_name, file_con
     syn_packet = IP(dst=ip) / TCP(dport=deport, sport=sport, flags="S")
 
     # Send SYN packet and receive SYN-ACK response
-    syn_ack_response = sr1(syn_packet, timeout=RCV_PACKET_TIMEOUT, verbose=False)
+    syn_ack_response = sr1(syn_packet, verbose=False)
 
     if syn_ack_response:
         # Extract sequence and acknowledgment numbers
@@ -24,7 +25,7 @@ def scapy_send_post_get(ip, deport, sport, path, user_agent, file_name, file_con
         # Craft ACK packet to complete TCP handshake
         ack_packet = IP(dst=ip) / TCP(dport=deport, sport=sport,
                                       flags="A", seq=seq_num, ack=ack_num)
-        send(ack_packet, verbose=False, timeout=RCV_PACKET_TIMEOUT)
+        send(ack_packet, verbose=False)
 
         # Craft HTTP POST request with file content
         http_post_request = (
@@ -42,14 +43,14 @@ def scapy_send_post_get(ip, deport, sport, path, user_agent, file_name, file_con
             ) + file_content + (
             b'\r\n'
             b'--boundary123--\r\n'
-        )
+            )
 
         print(http_post_request)
 
         # Send HTTP POST request within established TCP connection
         http_request_packet = IP(dst=ip) / TCP(dport=deport, sport=sport,
                                                flags="A", seq=seq_num, ack=ack_num) / http_post_request
-        response = sr1(http_request_packet, timeout=RCV_PACKET_TIMEOUT, verbose=False)
+        response = sr1(http_request_packet, verbose=False)
 
         if not response:
             raise ValueError("Response is None")
