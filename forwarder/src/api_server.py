@@ -1,6 +1,12 @@
+from os import path
+
 from fastapi import FastAPI, Response, UploadFile, File, Depends
 import requests
 from pydantic import BaseModel
+from fastapi import applications
+from fastapi.staticfiles import StaticFiles
+from fastapi.openapi.docs import get_swagger_ui_html
+import fastapi_offline_swagger_ui
 
 TIMEOUT = 5
 
@@ -211,10 +217,10 @@ def run_http_post_listener(
 
 @app.post("/stop_http_post_listener")
 def stop_http_post_listener(
-                            response: Response,
-                            service_ip: str = "localhost",
-                            service_port: int = 9043
-                            ):
+        response: Response,
+        service_ip: str = "localhost",
+        service_port: int = 9043
+):
     # Create a request to the service API server
     try:
         req_response = requests.get(f"http://{service_ip}:{service_port}/stop_http_post_listener",
@@ -230,3 +236,20 @@ def stop_http_post_listener(
         return req_response.text
 
     return "OK"
+
+
+assets_path = fastapi_offline_swagger_ui.__path__[0]
+if path.exists(assets_path + "/swagger-ui.css") and path.exists(assets_path + "/swagger-ui-bundle.js"):
+    app.mount("/assets", StaticFiles(directory=assets_path), name="static")
+
+
+    def swagger_monkey_patch(*args, **kwargs):
+        return get_swagger_ui_html(
+            *args,
+            **kwargs,
+            swagger_favicon_url="",
+            swagger_css_url="/assets/swagger-ui.css",
+            swagger_js_url="/assets/swagger-ui-bundle.js",
+        )
+
+    applications.get_swagger_ui_html = swagger_monkey_patch

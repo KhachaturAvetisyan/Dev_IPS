@@ -1,3 +1,4 @@
+from os import path
 from time import sleep
 from typing import Optional, Union
 from fastapi import FastAPI, Response, UploadFile, File, Depends
@@ -7,6 +8,10 @@ from pydantic import BaseModel
 from src.listeners.http_get_listener import run_http_get_app
 from src.listeners.http_post_listener import run_http_post_app
 from multiprocessing import Process
+from fastapi import applications
+from fastapi.staticfiles import StaticFiles
+from fastapi.openapi.docs import get_swagger_ui_html
+import fastapi_offline_swagger_ui
 
 app = FastAPI(
     title="Service API",
@@ -191,3 +196,20 @@ def stop_http_post_listener(response: Response):
     listeners_list["http_post_listener"]["status"] = "disabled"
 
     return "OK"
+
+
+assets_path = fastapi_offline_swagger_ui.__path__[0]
+if path.exists(assets_path + "/swagger-ui.css") and path.exists(assets_path + "/swagger-ui-bundle.js"):
+    app.mount("/assets", StaticFiles(directory=assets_path), name="static")
+
+
+    def swagger_monkey_patch(*args, **kwargs):
+        return get_swagger_ui_html(
+            *args,
+            **kwargs,
+            swagger_favicon_url="",
+            swagger_css_url="/assets/swagger-ui.css",
+            swagger_js_url="/assets/swagger-ui-bundle.js",
+        )
+
+    applications.get_swagger_ui_html = swagger_monkey_patch
