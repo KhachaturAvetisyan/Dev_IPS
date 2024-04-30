@@ -1,5 +1,4 @@
 from os import path
-
 from fastapi import FastAPI, Response, UploadFile, File, Depends
 import requests
 from pydantic import BaseModel
