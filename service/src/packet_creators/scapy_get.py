@@ -43,8 +43,6 @@ def scapy_send_http_get(ip, deport, sport, path, user_agent):
             b'Accept-Language: en-US,en;q=0.9\r\n\r\n'
         )
 
-        print(http_get_request)
-
         # Create HTTP GET request within established TCP connection
         http_request_packet = IP(dst=ip) / TCP(dport=deport, sport=sport,
                                                flags="A", seq=seq_num, ack=ack_num) / http_get_request
